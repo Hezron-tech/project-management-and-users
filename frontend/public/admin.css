@@ -1,0 +1,51 @@
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.incomplete {
+  border: 2px solid red;
+  padding: 0 20px;
+}
+.all {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 0 2rem;
+  height: 2rem;
+  width: 80%;
+}
+
+button {
+  margin-top: 2rem;
+  margin-left: 1rem;
+  padding: 10px;
+  background-color: aquamarine;
+  border-radius: 15px;
+  align-items: center;
+}
+
+.all {
+  /* border: 2px solid black; */
+  display: flex;
+}
+.pr {
+  /* border: 1px solid black; */
+
+  padding: 2rem;
+  margin: 1rem;
+  background-color: antiquewhite;
+}
+.btn {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  gap: 3rem;
+}
+select {
+  padding: 0 2rem;
+  height: 2rem;
+  width: 80%;
+}
