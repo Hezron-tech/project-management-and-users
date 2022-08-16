@@ -1,55 +1,45 @@
-
-
 interface UserProject {
-    title: string;
-    description: string;
-    date: string;
-    
+  id: string;
+  title: string;
+  description: string;
+  user_id: string;
+  date: string;
+}
+
+class Projects {
+  constructor() {}
+  displayProject(id:string) {
+    fetch(`http://localhost:5000/users/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        projects.innerHTML = data
+          .map((project: any) => {
+            const id = project.id;
+            return `
+          <div class="projo">
+              <h1>${project.name}</h1>
+              <p>${project.description}</p>
+              <p>Due on:  ${project.date}</p>
+              <div class="btn">
+              <button class=${id} id="complete-btn">Complete</button>
+              
+              </div>
+          </div>
+          `;
+          })
+          .join("");
+      });
   }
-  
-//   class Projects {
+  checkProjects() {
+    try {
+      const user = JSON.parse(localStorage.getItem("user") ?? "");
+      this.displayProject(user?.user_id);
+    } catch (error) {}
+  }
+ ;
+}
 
-//     constructor() {}
-//    display() {
-//         let incompleted = document.querySelector(".all-task") as HTMLDivElement;
-//         incompleted.innerHTML = "<h1>All tasks</h1>";
-    
-//         // let title,desc,duedate,diff=''
-//         this.userProject().map((task: any, index: any) => {
-//           const maindiv = document.createElement("div");
-    
-//           maindiv.style.padding = "20px";
-    
-//           const h2 = document.createElement("h2");
-//           h2.style.padding = "10px";
-//           const h4 = document.createElement("h4");
-//           const p = document.createElement("p");
-    
-//           const button = document.createElement("button");
-//           button.style.color = "white";
-//           button.style.backgroundColor = "red";
-//           button.style.padding = "10px";
-//           button.style.borderRadius = "20px";
-//           button.style.marginRight = "5px";
-    
-         
-//           const completedButton = document.createElement("button");
-          
-    
-//           button.innerHTML = "delete";
-//           button.id = "button-delete";
-    
-//           completedButton.innerHTML = "completed";
-//           completedButton.id = "btn-completed";
-//           completedButton.style.padding = "15px";
-//           completedButton.style.borderRadius = "20px";
-//           completedButton.style.marginRight = "5px";
-//           completedButton.style.backgroundColor = "grey";
-//           });
-//         }
-    
-    
+const project = new Projects();
 
-
-//     }
-   
+project.checkProjects();

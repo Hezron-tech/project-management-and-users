@@ -7,8 +7,10 @@ const password = document.getElementById("password") as HTMLInputElement;
 const validate = document.getElementById("validation") as HTMLInputElement;
 const registerbtn = document.getElementById("register") as HTMLButtonElement;
 const loginbtn = document.getElementById("loginbutton") as HTMLButtonElement;
-const loginemail= document.getElementById("loginemail") as HTMLInputElement
-const loginpassword= document.getElementById("loginpassword") as HTMLInputElement
+const loginemail = document.getElementById("loginemail") as HTMLInputElement;
+const loginpassword = document.getElementById(
+  "loginpassword"
+) as HTMLInputElement;
 
 window.onload = function () {
   signUpButton.addEventListener("click", () => {
@@ -37,7 +39,7 @@ class Users {
           },
           method: "POST",
           body: JSON.stringify({
-            username:username,
+            username: username,
             email: email,
             password: password,
           }),
@@ -53,7 +55,7 @@ class Users {
 
     prom
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.error) {
           validate.innerText = "Invalid Credentials";
         } else {
@@ -64,7 +66,6 @@ class Users {
         throw err;
       });
   }
-
 
   //login
   loginUser(email: string, password: string) {
@@ -83,33 +84,25 @@ class Users {
         return res.json();
       })
       .then((data) => {
-        
-        
         data.token ? localStorage.setItem("token", data.token) : "";
-        data.user ? localStorage.setItem("user", JSON.stringify(data.user)) : "";
-        if (data.error) {
-           alert("Invalid Credentials")
-        } else {
-          alert("login succesfully")
-             this.redirect();
-        }
-  
-        if(data.user){
-          if (data.user.Role === "Admin") {
-            location.href = "admin.html";
-          } else {
-            location.href = "user.html";
-          }
+        data.user
+          ? localStorage.setItem("user", JSON.stringify(data.user))
+          : "";
 
-          
+        // console.log({ data });
+
+        if (data.success) {
+          alert("login succesfully");
+          this.redirect();
+        } else {
+          alert("Invalid Credentials");
         }
       })
-      .catch(console.log)
-  
+      .catch(console.log);
   }
   redirect() {
     const token = localStorage.getItem("token") as string;
-    new Promise<{ username: string; Role: string }>((resolve, reject) => {
+    new Promise<{ username: string; role: string }>((resolve, reject) => {
       fetch("http://localhost:5000/users/checkuser", {
         headers: {
           Accept: "application/json",
@@ -121,12 +114,11 @@ class Users {
         .then((res) => resolve(res.json()))
         .catch((err) => reject(err));
     }).then((data) => {
-     
-      console.log(data.username);
-      if (data.Role ==="user") {
-        location.href ="user.html";
+      // console.log(data);
+      if (data.role === "user") {
+        location.href = "user.html";
       } else {
-        location.href ="admin.html";
+        location.href = "admin.html";
         console.log(data.username);
       }
     });
@@ -163,13 +155,13 @@ registerbtn.addEventListener("click", () => {
 });
 
 loginbtn.addEventListener("click", (e) => {
-  e.preventDefault()
-
+  e.preventDefault();
 
   // console.log(Users.getUser().redirect());
-  
+
   const emailinput = loginemail.value;
   const pass = loginpassword.value;
+  console.log(emailinput);
 
   if (emailinput === "" || pass === "") {
     console.log("Please fill in all Fields");
@@ -177,10 +169,3 @@ loginbtn.addEventListener("click", (e) => {
     Users.getUser().loginUser(emailinput, pass);
   }
 });
-
-
-
-
-
-
-
